@@ -1,15 +1,25 @@
 #!/usr/bin/env bash
-# Creates the file /var/run/myscript.pid containing its PID
-# Displays "To infinity and beyond" indefinitely
-# Displays "I hate the kill command" when receiving a SIGTERM signal
-# Displays "Y U no love me?!" when receiving a SIGINT signal
-# Deletes the file /var/run/myscript.pid and terminate itself when receiving a SIGQUIT or SIGTERM signal
+# Manages 'manage_my_process'
 
-echo "$$" > /var/run/myscript.pid
-trap "echo 'I hate the kill command'; rm /var/run/myscript.pid; exit" SIGTERM
-trap "rm /var/run/myscript.pid; exit" SIGQUIT
-trap "echo 'Y U no love me?!'" SIGINT
-while true; do
-      echo "To infinity and beyond"
-      sleep 2
-done
+if [ "${1}" == "start" ]
+then
+    ./manage_my_process &
+    touch /var/run/my_process.pid
+    echo "$!" > /var/run/my_process.pid
+    echo "manage_my_process started"
+elif [ "${1}" == "stop" ]
+then
+    echo "manage_my_process stopped"
+    kill "$(cat /var/run/my_process.pid)"
+    rm /var/run/my_process.pid
+elif [ "${1}" == "restart" ]
+then
+    kill "$(cat /var/run/my_process.pid)"
+    rm /var/run/my_process.pid
+    ./manage_my_process &
+    touch /var/run/my_process.pid
+    echo "$!" > /var/run/my_process.pid
+    echo "manage_my_process restarted"
+else
+    echo "Usage: manage_my_process {start|stop|restart}"
+fi
