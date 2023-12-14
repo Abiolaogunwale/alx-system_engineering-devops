@@ -1,0 +1,32 @@
+0x11. What happens when you type google.com in your browser and press Enter
+DNS Request
+What is DNS?
+DNS means the Domain Name System (DNS) and it is the phonebook of the Internet. When you type https://www.google.com into your browser and press Enter, a DNS request is made as the first step in the process. Your browser converts the human-readable address (www.google.com) into an IP or hostname address which is the language the system understands and this will be used by the computer to locate the server hosting the website. Here’s a step by step process of  how the DNS request works:
+1.1. Local DNS Resolver
+Your browser sends a DNS request to your local DNS resolver, which is usually provided by your Internet Service Provider (ISP). If the local DNS resolver has the IP address of the website in its cache, it returns the IP address to your browser. Otherwise, it forwards the request to the root DNS servers.
+1.2. Root DNS Servers
+The root DNS servers are responsible for maintaining a directory of all the TLD (top-level domain) servers. The root DNS server doesn’t know the IP address of the website, but it can direct the request to the TLD servers.
+1.3. TLD (Top-Level Domain) Servers
+The TLD servers are responsible for maintaining a directory of all the authoritative DNS servers for the domains under their control. The TLD server doesn’t know the IP address of the website, but it can direct the request to the authoritative DNS server for the domain.
+1.4. Authoritative DNS Server
+The authoritative DNS server is responsible for maintaining a directory of all the IP addresses associated with the domain. It responds to the request with the IP address of the server hosting the website.
+2. TCP/IP Connection
+Once your browser has obtained the IP address of the server hosting the website, it establishes a TCP/IP connection with that server. This is done using the Transmission Control Protocol (TCP) and the Internet Protocol (IP). TCP is responsible for ensuring that the data sent between the client and server is delivered reliably and in the correct order, while IP is responsible for routing the data between networks.
+3. Firewall
+Before the connection can be established, it may need to pass through a firewall. A firewall is a security mechanism that can block incoming traffic that is deemed unsafe or malicious. If the connection is allowed through the firewall, the browser can send an HTTP request to the server.
+4. HTTPS/SSL
+When your browser sends an HTTP request to the server, it may also request an encrypted connection using HTTPS (Hypertext Transfer Protocol Secure). HTTPS uses SSL (Secure Sockets Layer) or TLS (Transport Layer Security) to encrypt the data sent between the client and server, preventing third parties from intercepting and reading it. The server responds with a SSL/TLS certificate, which includes a public key that the client can use to encrypt data sent to the server.
+5. Load-Balancer
+Once the connection is established and encrypted, the request is sent to a load-balancer. A load-balancer is a device or software that distributes incoming requests across multiple servers to ensure that no single server is overloaded. The load-balancer may use various algorithms to determine which server should handle a given request, such as round-robin or least connections. Once the load balancer has determined which application server to send the request to, the request is forwarded to a web server. The web server’s job is to receive the request, interpret it, and send back an appropriate response.
+6. Web Server
+The load-balancer forwards the request to a web server, which is a software program that handles HTTP requests. The web server may run on the same machine as the load-balancer or on a separate machine. The web server retrieves the requested web page from disk or generates it dynamically using a scripting language like PHP or Python.
+7. Application Server
+If the requested web page requires dynamic content, such as a user login or database query, the web server sends the request to an application server. The application server is responsible for executing code that generates dynamic content. This code can be written in languages such as Java, Ruby, or Node.js.
+8. Database Server
+If the application server needs to access a database, it sends a request to a database server. The database server stores and retrieves data requested by the application server. The data can be stored in a variety of formats, such as relational or NoSQL databases.
+9. Final Response
+Once all the necessary data has been retrieved, the web server generates a response and sends it back to the client. The response may include the requested web page, along with any other resources needed to display it, such as images, stylesheets, or JavaScript files. The response is sent back over the TCP/IP connection established earlier
+Conclusion
+The DNS request is just the first step in the process of loading a website in your browser. Once the IP address of the server hosting the website has been obtained, the browser establishes a TCP/IP connection, passes through a firewall (if necessary), establishes an encrypted connection using HTTPS/SSL, sends a request to a load-balancer, which forwards it to a web server. If dynamic content is required, the request is sent to an application server, which may access a database server. Finally, the web server generates a response and sends it back to the client over the TCP/IP connection.
+
+
