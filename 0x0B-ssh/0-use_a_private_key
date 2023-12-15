@@ -4,6 +4,6 @@
 # with the user ubuntu.
 
 # You do not need to handle the case of a private key 
-# protected by a passphrase
+# protected by a passphrase 
 
-ssh -i ~/.ssh/school ubuntu@8.8.8.8
+ssh ubuntu -i ~/.ssh/school
