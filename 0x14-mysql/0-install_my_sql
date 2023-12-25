@@ -1,0 +1,129 @@
+ubuntu@279230-web-01:~$ mysql --version
+mysql  Ver 14.14 Distrib 5.7.42, for Linux (x86_64) using  EditLine wrapper
+
+Last login: Fri Dec 22 12:04:02 2023 from 34.204.168.81ubuntu@279230-web-01:~$ sudo mysql -u root -p
+Enter password: betty
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 2
+Server version: 5.7.42-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> 
+
+USE tyrell_' at line 1
+mysql> USE tyrell_corp;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> SELECT * FROM nexus6
+    -> ;
++----+------+
+| id | name |
++----+------+
+|  1 | Leon |
++----+------+
+1 row in set (0.00 sec)
+
+mysql> SHOW GRANTS FOR 'holberton_user'@'localhost';
++------------------------------------------------------------------------+
+| Grants for holberton_user@localhost                                    |
++------------------------------------------------------------------------+
+| GRANT REPLICATION CLIENT ON *.* TO 'holberton_user'@'localhost'        |
+| GRANT SELECT ON `tyrell_corp`.`nexus6` TO 'holberton_user'@'localhost' |
++------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> exit
+Bye
+ubuntu@279230-web-01:~$ mysql -uholberton_user -p -e "use tyrell_corp; select * from nexus6"
+Enter password: 
++----+------+
+| id | name |
++----+------+
+|  1 | Leon |
++----+------+
+mysql> CREATE USER 'replica_user'@'%' IDENTIFIED BY 'projectcorrection280hbtn';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> GRANT REPLICATION SLAVE ON *.* TO 'replica_user'@'%';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> GRANT SELECT ON mysql.user TO 'holberton_user'@'localhost';
+Query OK, 0 rows affected (0.00 sec)
+
+
+mysql> FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SHOW GRANTS FOR 'replica_user'@'%';
++------------------------------------------------------+
+| Grants for replica_user@%                            |
++------------------------------------------------------+
+| GRANT REPLICATION SLAVE ON *.* TO 'replica_user'@'%' |
++------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SHOW GRANTS FOR 'holberton_user'@'localhost';
++------------------------------------------------------------------------+
+| Grants for holberton_user@localhost                                    |
++------------------------------------------------------------------------+
+| GRANT REPLICATION CLIENT ON *.* TO 'holberton_user'@'localhost'        |
+| GRANT SELECT ON `tyrell_corp`.`nexus6` TO 'holberton_user'@'localhost' |
+| GRANT SELECT ON `mysql`.`user` TO 'holberton_user'@'localhost'         |
++------------------------------------------------------------------------+
+3 rows in set (0.00 sec)
+
+ubuntu@279230-web-01:~$ mysql -uholberton_user -p -e 'SELECT user, Repl_slave_priv FROM mysql.user'
+Enter password:  projectcorrection280hbtn
++----------------+-----------------+
+| user           | Repl_slave_priv |
++----------------+-----------------+
+| root           | Y               |
+| mysql.session  | N               |
+| mysql.sys      | N               |
+| holberton_user | N               |
+| replica_user   | Y               |
++----------------+-----------------+
+
+ubuntu@279230-web-01:~$ sudo ls /etc/mysql/mysql.conf.d
+mysqld.cnf
+ubuntu@279230-web-01:~$ sudo ls /etc/mysql/mysql.conf.d/mysqld.cnf
+/etc/mysql/mysql.conf.d/mysqld.cnf
+ubuntu@279230-web-01:~$ vi /etc/mysql/mysql.conf.d/mysqld.cnf
+ubuntu@279230-web-01:~$ sudo service mysql restart
+ubuntu@279230-web-01:~$ sudo service mysql status
+● mysql.service - MySQL Community Server
+     Loaded: loaded (/lib/systemd/system/mysql.service; enabled; vendor preset: enabled)
+     Active: active (running) since Sun 2023-12-24 20:25:10 UTC; 15s ago
+    Process: 74996 ExecStartPre=/usr/share/mysql/mysql-systemd-start pre (code=exited, status=0/SUCCESS)
+    Process: 75035 ExecStart=/usr/sbin/mysqld --daemonize --pid-file=/var/run/mysqld/mysqld.pid (code=exited, status=0/SUCCESS)
+   Main PID: 75037 (mysqld)
+      Tasks: 27 (limit: 1143)
+     Memory: 191.6M
+     CGroup: /system.slice/mysql.service
+             └─75037 /usr/sbin/mysqld --daemonize --pid-file=/var/run/mysqld/mysqld.pid
+
+Dec 24 20:25:07 279230-web-01 systemd[1]: mysql.service: Succeeded.
+Dec 24 20:25:07 279230-web-01 systemd[1]: Stopped MySQL Community Server.
+Dec 24 20:25:07 279230-web-01 systemd[1]: Starting MySQL Community Server...
+Dec 24 20:25:08 279230-web-01 mysql-systemd-start[75034]: AppArmor parser error for /etc/apparmor.d/usr.sbin.mysqld in /etc/apparmor.d/usr.sbin.mysqld at line 7: Could not open 'abstractions/mysql'
+Dec 24 20:25:10 279230-web-01 systemd[1]: Started MySQL Community Server.
+
+
+mysql> SHOW MASTER STATUS;
++------------------+----------+--------------+------------------+-------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++------------------+----------+--------------+------------------+-------------------+
+| mysql-bin.000002 |      154 |              |                  |                   |
++------------------+----------+--------------+------------------+-------------------+
+1 row in set (0.00 sec)
+
+
