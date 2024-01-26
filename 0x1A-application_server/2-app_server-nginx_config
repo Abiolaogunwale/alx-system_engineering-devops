@@ -16,7 +16,7 @@ server {
 	}
 
 	if ($request_filename ~ redirect_me){
-		rewrite ^ https://github.com/abiolaogunwale/models permanent;
+		rewrite ^ https://github.com/abiolaogunwale permanent;
 	}
 
 	error_page 404 /404.html;
